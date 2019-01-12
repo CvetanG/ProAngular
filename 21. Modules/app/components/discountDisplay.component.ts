@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { DiscountService } from "./discount.service";
+import { DiscountService } from "../common/discount.service";
 
 @Component({
 	selector: "paDiscountDisplay",
@@ -8,7 +8,7 @@ import { DiscountService } from "./discount.service";
 				</div>`
 })
 export class PaDiscountDisplayComponent {
-	
+
 	// @Input("discounter")
 	// discounter: DiscountService;
 

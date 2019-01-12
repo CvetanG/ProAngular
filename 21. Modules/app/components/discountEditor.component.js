@@ -9,20 +9,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var discount_service_1 = require("./discount.service");
-var PaDiscountDisplayComponent = (function () {
+var discount_service_1 = require("../common/discount.service");
+var PaDiscountEditorComponent = (function () {
     // @Input("discounter")
     // discounter: DiscountService;
-    function PaDiscountDisplayComponent(discounter) {
+    function PaDiscountEditorComponent(discounter) {
         this.discounter = discounter;
     }
-    PaDiscountDisplayComponent = __decorate([
+    PaDiscountEditorComponent = __decorate([
         core_1.Component({
-            selector: "paDiscountDisplay",
-            template: "<div class=\"bg-info p-a-1\">\n\t\t\t\tThe discount is {{discounter.discount}}\n\t\t\t\t</div>"
+            selector: "paDiscountEditor",
+            template: "<div class=\"form-group\">\n\t\t\t\t<label>Discount</label>\n\t\t\t\t<input [(ngModel)]=\"discounter.discount\"\n\t\t\t\tclass=\"form-control\" type=\"number\" />\n\t\t\t\t</div>"
         }), 
         __metadata('design:paramtypes', [discount_service_1.DiscountService])
-    ], PaDiscountDisplayComponent);
-    return PaDiscountDisplayComponent;
+    ], PaDiscountEditorComponent);
+    return PaDiscountEditorComponent;
 }());
-exports.PaDiscountDisplayComponent = PaDiscountDisplayComponent;
+exports.PaDiscountEditorComponent = PaDiscountEditorComponent;
