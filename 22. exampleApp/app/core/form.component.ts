@@ -1,8 +1,13 @@
-import { Component } from "@angular/core";
+import { Component, Inject } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { Product } from "../model/product.model";
 import { Model } from "../model/repository.model"
-import { MODES, SharedState } from "./sharedState.model";
+import { MODES, SharedState, SHARED_STATE } from "./sharedState.model";
+import { Observable } from "rxjs/Observable";
+import "rxjs/add/operator/filter";
+import "rxjs/add/operator/map";
+import "rxjs/add/operator/distinctUntilChanged";
+import "rxjs/add/operator/skipWhile";
 
 @Component({
     selector: "paForm",
@@ -12,13 +17,54 @@ import { MODES, SharedState } from "./sharedState.model";
 })
 export class FormComponent {
     product: Product = new Product();
+    // lastId: number;
+
+    // constructor(private model: Model,
+    //     private state: SharedState) { }
 
     constructor(private model: Model,
-        private state: SharedState) { }
+        @Inject(SHARED_STATE) private stateEvents: Observable<SharedState>) {
 
-    get editing(): boolean {
-        return this.state.mode == MODES.EDIT;
+        stateEvents
+            //     .map(state => new SharedState(state.mode, state.id == 5 ? 1 : state.id))
+            //     .filter(state => state.id != 3)
+            //     .subscribe((update) => {
+            //         this.product = new Product();
+            //         if (update.id != undefined) {
+            //             Object.assign(this.product, this.model.getProduct(update.id));
+            //         }
+            //         this.editing = update.mode == MODES.EDIT;
+
+            // ch23. Using Different Event Objects
+            //     .map(state => state.mode == MODES.EDIT ? state.id : -1)
+            //     .distinctUntilChanged()
+            //     .filter(id => id != 3)
+            //     .subscribe((id) => {
+            //         this.editing = id != -1;
+            //         this.product = new Product();
+            //         if (id != -1) {
+            //             Object.assign(this.product, this.model.getProduct(id))
+            //         }
+
+            // ch23. Custom Equality Checker
+            .skipWhile(state => state.mode == MODES.EDIT)
+            .distinctUntilChanged((firstState, secondState) =>
+                firstState.mode == secondState.mode && firstState.id == secondState.id)
+            .subscribe(update => {
+                this.product = new Product();
+                if (update.id != undefined) {
+                    Object.assign(this.product, this.model.getProduct(update.id));
+                }
+                this.editing = update.mode == MODES.EDIT;
+
+            });
     }
+
+    // get editing(): boolean {
+    //     return this.state.mode == MODES.EDIT;
+    // }
+
+    editing: boolean = false;
 
     submitForm(form: NgForm) {
         if (form.valid) {
@@ -31,4 +77,14 @@ export class FormComponent {
     resetForm() {
         this.product = new Product();
     }
+
+    // ngDoCheck() {
+    //     if (this.lastId != this.state.id) {
+    //         this.product = new Product();
+    //         if (this.state.mode == MODES.EDIT) {
+    //             Object.assign(this.product, this.model.getProduct(this.state.id));
+    //         }
+    //         this.lastId = this.state.id;
+    //     }
+    // }
 }
