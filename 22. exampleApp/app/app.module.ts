@@ -6,9 +6,15 @@ import { TableComponent } from "./core/table.component";
 import { FormComponent } from "./core/form.component";
 import { MessageModule } from "./messages/message.module";
 import { MessageComponent } from "./messages/message.component";
+import { routing } from "./app.routing";
+import { AppComponent } from "./app.component";
 
 @NgModule({
-    imports: [BrowserModule, ModelModule, CoreModule, MessageModule],
-    bootstrap: [TableComponent, FormComponent, MessageComponent]
+    // imports: [BrowserModule, ModelModule, CoreModule, MessageModule, routing],
+    imports: [BrowserModule, CoreModule, MessageModule, routing],
+    declarations: [AppComponent],
+
+    // bootstrap: [TableComponent, FormComponent, MessageComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,24 +9,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var platform_browser_1 = require("@angular/platform-browser");
-var message_component_1 = require("./message.component");
-var message_service_1 = require("./message.service");
-var errorHandler_1 = require("./errorHandler");
-var router_1 = require("@angular/router");
-var MessageModule = (function () {
-    function MessageModule() {
+var AppComponent = (function () {
+    function AppComponent() {
     }
-    MessageModule = __decorate([
-        core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, router_1.RouterModule],
-            declarations: [message_component_1.MessageComponent],
-            exports: [message_component_1.MessageComponent],
-            providers: [message_service_1.MessageService,
-                { provide: core_1.ErrorHandler, useClass: errorHandler_1.MessageErrorHandler }]
+    AppComponent = __decorate([
+        core_1.Component({
+            selector: "app",
+            moduleId: module.id,
+            templateUrl: "app.component.html"
         }), 
         __metadata('design:paramtypes', [])
-    ], MessageModule);
-    return MessageModule;
+    ], AppComponent);
+    return AppComponent;
 }());
-exports.MessageModule = MessageModule;
+exports.AppComponent = AppComponent;
