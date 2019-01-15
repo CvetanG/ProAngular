@@ -9,14 +9,19 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require("@angular/core");
-var static_datasource_1 = require("./static.datasource");
+var rest_datasource_1 = require("./rest.datasource");
 var Model = (function () {
+    // constructor(private dataSource: StaticDataSource) {
+    //     this.products = new Array<Product>();
+    //     this.dataSource.getData().forEach(p => this.products.push(p));
+    // }
     function Model(dataSource) {
         var _this = this;
         this.dataSource = dataSource;
-        this.locator = function (p, id) { return p.id == id; };
+        // private products: Product[];
         this.products = new Array();
-        this.dataSource.getData().forEach(function (p) { return _this.products.push(p); });
+        this.locator = function (p, id) { return p.id == id; };
+        this.dataSource.getData().subscribe(function (data) { return _this.products = data; });
     }
     Model.prototype.getProducts = function () {
         return this.products;
@@ -25,35 +30,55 @@ var Model = (function () {
         var _this = this;
         return this.products.find(function (p) { return _this.locator(p, id); });
     };
+    // saveProduct(product: Product) {
+    //     if (product.id == 0 || product.id == null) {
+    //         product.id = this.generateID();
+    //         this.products.push(product);
+    //     } else {
+    //         let index = this.products
+    //             .findIndex(p => this.locator(p, product.id));
+    //         this.products.splice(index, 1, product);
+    //     }
+    // }
     Model.prototype.saveProduct = function (product) {
         var _this = this;
         if (product.id == 0 || product.id == null) {
-            product.id = this.generateID();
-            this.products.push(product);
+            this.dataSource.saveProduct(product)
+                .subscribe(function (p) { return _this.products.push(p); });
         }
         else {
-            var index = this.products
-                .findIndex(function (p) { return _this.locator(p, product.id); });
-            this.products.splice(index, 1, product);
+            this.dataSource.updateProduct(product).subscribe(function (p) {
+                var index = _this.products
+                    .findIndex(function (item) { return _this.locator(item, p.id); });
+                _this.products.splice(index, 1, p);
+            });
         }
     };
+    // deleteProduct(id: number) {
+    //     let index = this.products.findIndex(p => this.locator(p, id));
+    //     if (index > -1) {
+    //         this.products.splice(index, 1);
+    //     }
+    // }
+    // private generateID(): number {
+    //     let candidate = 100;
+    //     while (this.getProduct(candidate) != null) {
+    //         candidate++;
+    //     }
+    //     return candidate;
+    // }
     Model.prototype.deleteProduct = function (id) {
         var _this = this;
-        var index = this.products.findIndex(function (p) { return _this.locator(p, id); });
-        if (index > -1) {
-            this.products.splice(index, 1);
-        }
-    };
-    Model.prototype.generateID = function () {
-        var candidate = 100;
-        while (this.getProduct(candidate) != null) {
-            candidate++;
-        }
-        return candidate;
+        this.dataSource.deleteProduct(id).subscribe(function () {
+            var index = _this.products.findIndex(function (p) { return _this.locator(p, id); });
+            if (index > -1) {
+                _this.products.splice(index, 1);
+            }
+        });
     };
     Model = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [static_datasource_1.StaticDataSource])
+        __metadata('design:paramtypes', [rest_datasource_1.RestDataSource])
     ], Model);
     return Model;
 }());

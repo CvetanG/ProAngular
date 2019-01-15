@@ -47,9 +47,9 @@ export class FormComponent {
             //         }
 
             // ch23. Custom Equality Checker
-            .skipWhile(state => state.mode == MODES.EDIT)
-            .distinctUntilChanged((firstState, secondState) =>
-                firstState.mode == secondState.mode && firstState.id == secondState.id)
+            // .skipWhile(state => state.mode == MODES.EDIT)
+            // .distinctUntilChanged((firstState, secondState) =>
+            //     firstState.mode == secondState.mode && firstState.id == secondState.id)
             .subscribe(update => {
                 this.product = new Product();
                 if (update.id != undefined) {
