@@ -14,13 +14,21 @@ export class FormComponent {
     product: Product = new Product();
 
     constructor(private model: Model, activeRoute: ActivatedRoute,
-     private router: Router) {
+        private router: Router) {
 
-        this.editing = activeRoute.snapshot.params["mode"] == "edit";
-        let id = activeRoute.snapshot.params["id"];
-        if (id != null) {
-            Object.assign(this.product, model.getProduct(id) || new Product());
-        }
+        // this.editing = activeRoute.snapshot.params["mode"] == "edit";
+        // let id = activeRoute.snapshot.params["id"];
+        // if (id != null) {
+        //     Object.assign(this.product, model.getProduct(id) || new Product());
+        // }
+
+        activeRoute.params.subscribe(params => {
+            this.editing = params["mode"] == "edit";
+            let id = params["id"];
+            if (id != null) {
+                Object.assign(this.product, model.getProduct(id) || new Product());
+            }
+        })
     }
 
     editing: boolean = false;
