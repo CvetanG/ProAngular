@@ -12,12 +12,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require("@angular/core");
-// import { Http, Request, RequestMethod, Jsonp } from "@angular/http";
 var http_1 = require("@angular/http");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/operator/map");
 require("rxjs/add/operator/catch");
 require("rxjs/add/observable/throw");
+require("rxjs/add/operator/delay");
 exports.REST_URL = new core_1.OpaqueToken("rest_url");
 var RestDataSource = (function () {
     function RestDataSource(http, url) {
@@ -68,7 +68,8 @@ var RestDataSource = (function () {
             url: url,
             body: body,
             headers: headers
-        })).map(function (response) { return response.json(); })
+        })).delay(3000)
+            .map(function (response) { return response.json(); })
             .catch(function (error) { return Observable_1.Observable.throw("Network Error: " + error.statusText + " (" + error.status + ")"); });
     };
     RestDataSource = __decorate([

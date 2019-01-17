@@ -1,11 +1,11 @@
 import { Injectable, Inject, OpaqueToken } from "@angular/core";
-// import { Http, Request, RequestMethod, Jsonp } from "@angular/http";
 import { Http, Request, RequestMethod, Headers, Response } from "@angular/http";
 import { Observable } from "rxjs/Observable";
 import { Product } from "./product.model";
 import "rxjs/add/operator/map";
 import "rxjs/add/operator/catch";
 import "rxjs/add/observable/throw";
+import "rxjs/add/operator/delay";
 
 export const REST_URL = new OpaqueToken("rest_url");
 
@@ -67,14 +67,14 @@ export class RestDataSource {
 				headers.set("Access-Key", "<secret>");
 				headers.set("Application-Names", ["exampleApp", "proAngular"]);
 
-
 				return this.http.request(new Request({
 					method: verb,
 					url: url,
 					body: body,
 					headers: headers
-		})).map(response => response.json())
-				.catch((error: Response) => Observable.throw(
-					`Network Error: ${error.statusText} (${error.status})`));
+				})).delay(3000)
+					.map(response => response.json())
+					.catch((error: Response) => Observable.throw(
+						`Network Error: ${error.statusText} (${error.status})`));
 	}
 }
