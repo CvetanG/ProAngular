@@ -9,47 +9,59 @@ import { TermsGuard } from "./terms.guard";
 import { UnsavedGuard } from "./core/unsaved.guard";
 import { LoadGuard } from "./load.guard";
 
-const childRoutes: Routes = [
-	// { path: "products", component: ProductCountComponent },
-	// { path: "categories", component: CategoryCountComponent },
-	// { path: "", component: ProductCountComponent }
-	{
-		path: "",
-		canActivateChild: [TermsGuard],
-		children: [{ path: "products", component: ProductCountComponent },
-					{ path: "categories", component: CategoryCountComponent },
-					{ path: "", component: ProductCountComponent }],
-		resolve: { model: ModelResolver }
-	}
-];
+// const childRoutes: Routes = [
+// 	// { path: "products", component: ProductCountComponent },
+// 	// { path: "categories", component: CategoryCountComponent },
+// 	// { path: "", component: ProductCountComponent }
+// 	{
+// 		path: "",
+// 		canActivateChild: [TermsGuard],
+// 		children: [{ path: "products", component: ProductCountComponent },
+// 					{ path: "categories", component: CategoryCountComponent },
+// 					{ path: "", component: ProductCountComponent }],
+// 		resolve: { model: ModelResolver }
+// 	}
+// ];
+
+// const routes: Routes = [
+// 	{
+// 		path: "ondemand",
+// 		loadChildren: "app/ondemand/ondemand.module#OndemandModule",
+// 		canLoad: [LoadGuard]
+// 	},
+// 	{
+// 		path: "form/:mode/:id", component: FormComponent,
+// 		resolve: { model: ModelResolver },
+// 		canDeactivate: [UnsavedGuard]
+// 	},
+// 	// {
+// 	// 	path: "form/:mode", component: FormComponent,
+// 	// 	resolve: { model: ModelResolver }
+// 	// },
+
+// 	{
+// 		path: "form/:mode", component: FormComponent,
+// 		resolve: { model: ModelResolver },
+// 		canActivate: [TermsGuard]
+
+// 	},
+
+// 	// { path: "form/:mode/:id", component: FormComponent },
+// 	// { path: "form/:mode", component: FormComponent },
+// 	{ path: "table", component: TableComponent, children: childRoutes },
+// 	{ path: "table/:category", component: TableComponent, children: childRoutes },
+// 	{ path: "", redirectTo: "/table", pathMatch: "full" },
+// 	{ path: "**", component: NotFoundComponent }
+// ]
 
 const routes: Routes = [
 	{
-		path: "ondemand",
-		loadChildren: "app/ondemand/ondemand.module#OndemandModule",
-		canLoad: [LoadGuard]
-	},
-	{
 		path: "form/:mode/:id", component: FormComponent,
-		resolve: { model: ModelResolver },
 		canDeactivate: [UnsavedGuard]
 	},
-	// {
-	// 	path: "form/:mode", component: FormComponent,
-	// 	resolve: { model: ModelResolver }
-	// },
-
-	{
-		path: "form/:mode", component: FormComponent,
-		resolve: { model: ModelResolver },
-		canActivate: [TermsGuard]
-
-	},
-
-	// { path: "form/:mode/:id", component: FormComponent },
-	// { path: "form/:mode", component: FormComponent },
-	{ path: "table", component: TableComponent, children: childRoutes },
-	{ path: "table/:category", component: TableComponent, children: childRoutes },
+	{ path: "form/:mode", component: FormComponent, canActivate: [TermsGuard] },
+	{ path: "table", component: TableComponent },
+	{ path: "table/:category", component: TableComponent },
 	{ path: "", redirectTo: "/table", pathMatch: "full" },
 	{ path: "**", component: NotFoundComponent }
 ]
